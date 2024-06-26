@@ -1,0 +1,8 @@
+Tests: upstream
+Depends: @,
+	 python3-coverage,
+	 python3-docutils,
+	 python3-flake8,
+	 python3-pytest,
+	 python3-pytest-cov
+Restrictions: allow-stderr

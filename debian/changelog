@@ -1,5 +1,66 @@
-template-repository (1.0-1) unstable; urgency=medium
+python-email-validator (1.3.0-1) unstable; urgency=medium
 
-  * Initial release
+  [ Debian Janitor ]
+  * Update standards version to 4.6.1, no changes needed.
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+  [ Sergio Durigan Junior ]
+  * d/control: Bump Standards-Version to 4.6.2; no changes needed.
+  * New upstream version 1.3.0 (Closes: #1023845)
+  * d/control: Add Rules-Requires-Root: no.
+
+ -- Sergio Durigan Junior <sergiodj@debian.org>  Sat, 24 Dec 2022 00:21:27 -0500
+
+python-email-validator (1.1.2-1) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Sergio Durigan Junior <sergiodj@debian.org>  Thu, 19 Aug 2021 20:11:05 -0400
+
+python-email-validator (1.1.2-1~exp1) experimental; urgency=medium
+
+  * Team upload.
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+
+  [ Ondřej Nový ]
+  * d/control: Update Maintainer field with new Debian Python Team
+    contact address.
+  * d/control: Update Vcs-* fields with new Debian Python Team Salsa
+    layout.
+
+  [ Athos Ribeiro ]
+  * New upstream version
+
+  [ Sergio Durigan Junior ]
+  * d/control: Bump Standards-Version to 4.5.1.
+
+ -- Athos Ribeiro <athoscribeiro@gmail.com>  Sun, 09 May 2021 10:54:20 -0300
+
+python-email-validator (1.1.1-3) unstable; urgency=medium
+
+  * Disable tests because they require internet access.
+    - d/control: Remove B-D on the packages that are needed for testing.
+    - d/rules: Override dh_auto_test.  The package requires internet
+      access (actually, just DNS) to perform the tests, and the policy
+      says that this shouldn't be done.  There is a discussion about
+      whether this is a sensible thing to do or not, but since we have
+      autopkgtests now, we can just run the tests there. (Closes: #966071)
+  * New autopkgtest for the package.
+    We run the upstream tests on it, since it's OK to require internet.
+
+ -- Sergio Durigan Junior <sergiodj@debian.org>  Sat, 25 Jul 2020 19:16:59 -0400
+
+python-email-validator (1.1.1-2) unstable; urgency=medium
+
+  * Bump version for source-only upload, needed to make the package
+    migrate.
+
+ -- Sergio Durigan Junior <sergiodj@debian.org>  Sat, 13 Jun 2020 12:37:01 -0400
+
+python-email-validator (1.1.1-1) unstable; urgency=medium
+
+  * Initial release (Closes: #962418)
+
+ -- Sergio Durigan Junior <sergiodj@debian.org>  Sun, 07 Jun 2020 12:35:59 -0400
