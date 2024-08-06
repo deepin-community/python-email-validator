@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders: Sergio Durigan Junior <sergiodj@debian.org>
 Build-Depends: debhelper-compat (= 13),
-	       dh-python,
+	       dh-sequence-python3,
 	       python3-setuptools,
 	       python3-all,
 	       python3-idna,
@@ -37,5 +37,3 @@ Description: Robust email address syntax and deliverability validation library (
  .
   - Normalizes email addresses (super important for internationalized
     addresses!).
- .
- This package installs the library for Python 3.
