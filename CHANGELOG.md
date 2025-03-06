@@ -1,10 +1,72 @@
+2.2.0 (June 20, 2024)
+---------------------
+
+* Email addresses with internationalized local parts could, with rare Unicode characters, be returned as valid but actually be invalid in their normalized form (returned in the `normalized` field). Local parts now re-validated after Unicode NFC normalization to ensure that invalid characters cannot be injected into the normalized address and that characters with length-increasing NFC normalizations cannot cause a local part to exceed the maximum length after normalization.
+* The length check for email addresses with internationalized local parts is now also applied to the original address string prior to Unicode NFC normalization, which may be longer and could exceed the maximum email address length, to protect callers who do not use the returned normalized address.
+* Improved error message for IDNA domains that are too long or have invalid characters after Unicode normalization.
+* A new option to parse `My Name <address@domain>` strings, i.e. a display name plus an email address in angle brackets, is now available. It is off by default.
+* Improvements to Python typing.
+* Some additional tests added.
+
+2.1.2 (June 16, 2024)
+---------------------
+
+* The domain name length limit is corrected from 255 to 253 IDNA ASCII characters. I misread the RFCs.
+* When a domain name has no MX record but does have an A or AAAA record, if none of the IP addresses in the response are globally reachable (i.e. not Private-Use, Loopback, etc.), the response is treated as if there was no A/AAAA response and the email address will fail the deliverability check.
+* When a domain name has no MX record but does have an A or AAAA record, the mx field in the object returned by validate_email incorrectly held the IP addresses rather than the domain itself.
+* Fixes in tests.
+
+2.1.1 (February 26, 2024)
+-------------------------
+
+* Fixed typo 'marking' instead of 'marketing' in case-insensitive mailbox name list.
+* When DNS-based deliverability checks fail, in some cases exceptions are now thrown with `raise ... from` for better nested exception tracking.
+* Fixed tests to work when no local resolver can be configured.
+* This project is now licensed under the Unlicense (instead of CC0).
+* Minor improvements to tests.
+* Minor improvements to code style.
+
+2.1.0 (October 22, 2023)
+------------------------
+
+* Python 3.8+ is now required (support for Python 3.7 was dropped).
+* The old `email` field on the returned `ValidatedEmail` object, which in the previous version was superseded by `normalized`, will now raise a deprecation warning if used. See https://stackoverflow.com/q/879173 for strategies to suppress the DeprecationWarning.
+* A `__version__` module attribute is added.
+* The email address argument to validate_email is now marked as positional-only to better reflect the documented usage using the new Python 3.8 feature.
+
+2.0.0 (April 15, 2023)
+----------------------
+
+This is a major update to the library, but since email address specs haven't changed there should be no significant changes to which email addresses are considered valid or invalid with default options. There are new options for accepting unusual email addresses that were previously always rejected, some changes to how DNS errors are handled, many changes in error message text, and major internal improvements including the addition of type annotations. Python 3.7+ is now required. Details follow:
+
+* Python 2.x and 3.x versions through 3.6, and dnspython 1.x, are no longer supported. Python 3.7+ with dnspython 2.x are now required.
+* The dnspython package is no longer required if DNS checks are not used, although it will install automatically.
+* NoNameservers and NXDOMAIN DNS errors are now handled differently: NoNameservers no longer fails validation, and NXDOMAIN now skips checking for an A/AAAA fallback and goes straight to failing validation.
+* Some syntax error messages have changed because they are now checked explicitly rather than as a part of other checks.
+* The quoted-string local part syntax (e.g. multiple @-signs, spaces, etc. if surrounded by quotes) and domain-literal addresses (e.g. @[192.XXX...] or @[IPv6:...]) are now parsed but not considered valid by default. Better error messages are now given for these addresses since it can be confusing for a technically valid address to be rejected, and new allow_quoted_local and allow_domain_literal options are added to allow these addresses if you really need them.
+* Some other error messages have changed to not repeat the email address in the error message.
+* The `email` field on the returned `ValidatedEmail` object has been renamed to `normalized` to be clearer about its importance, but access via `.email` is also still supported.
+* Some mailbox names like `postmaster` are now normalized to lowercase per RFC 2142.
+* The library has been reorganized internally into smaller modules.
+* The tests have been reorganized and expanded. Deliverability tests now mostly use captured DNS responses so they can be run off-line.
+* The __main__ tool now reads options to validate_email from environment variables.
+* Type annotations have been added to the exported methods and the ValidatedEmail class and some internal methods.
+* The old dict-like pattern for the return value of validate_email is deprecated.
+
+Versions 2.0.0.post1 and 2.0.0.post2 corrected some packaging issues. 2.0.0.post2 also added a check for an invalid combination of arguments.
+
+Version 1.3.1 (January 21, 2023)
+--------------------------------
+
+* The new SPF 'v=spf1 -all' (reject-all) deliverability check is removed in most cases. It now is performed only for domains that do not have MX records but do have an A/AAAA fallback record.
+
 Version 1.3.0 (September 18, 2022)
 ----------------------------------
 
 * Deliverability checks now check for 'v=spf1 -all' SPF records as a way to reject more bad domains.
 * Special use domain names now raise EmailSyntaxError instead of EmailUndeliverableError since they are performed even if check_deliverability is off.
 * New module-level attributes are added to override the default values of the keyword arguments and the special-use domains list.
-* The keyword arguments of the public methods are now marked as keyword-only.
+* The keyword arguments of the public methods are now marked as keyword-only, ending support for Python 2.x.
 * [pyIsEmail](https://github.com/michaelherold/pyIsEmail)'s test cases are added to the tests.
 * Recommend that check_deliverability be set to False for validation on login pages.
 * Added an undocumented globally_deliverable option.
